@@ -12,6 +12,6 @@ class QuizSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+
     }
 }
