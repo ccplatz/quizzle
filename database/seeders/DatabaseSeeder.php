@@ -15,12 +15,14 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory()
-            ->count(10)
+            ->count(5)
             ->hasQuizzes(3)
+            ->hasQuestions(10)
             ->create();
 
         User::factory()
             ->hasQuizzes(3)
+            ->hasQuestions(10)
             ->create([
                 'name' => '***REMOVED***',
                 'email' => '***REMOVED***',
