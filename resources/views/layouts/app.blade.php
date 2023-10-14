@@ -43,7 +43,7 @@
                         <li class="nav-item">
                             <a class="nav-link @if (Route::is('questions.index') || Route::is('questions.edit')) active @endif"
                                 href="{{ route('questions.index') }}">
-                                {{ __('Your Questions') }}
+                                {{ __('Your questions') }}
                             </a>
                         </li>
                         <li class="nav-item">
