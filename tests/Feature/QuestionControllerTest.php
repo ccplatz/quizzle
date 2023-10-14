@@ -81,4 +81,27 @@ class QuestionControllerTest extends TestCase
 
         $response->assertForbidden();
     }
+
+    public function testThatUserCannotDeleteAnotherUsersQuestion(): void
+    {
+        $this->seed();
+        $user1 = User::first();
+        $user2 = User::all()->last();
+        $question = $user1->questions->first();
+
+        $response = $this->actingAs($user2)->delete(route('questions.destroy', $question));
+
+        $response->assertForbidden();
+    }
+
+    public function testThatUserCanDeleteHisQuestion(): void
+    {
+        $this->seed();
+        $user = User::first();
+        $question = $user->questions->first();
+
+        $response = $this->actingAs($user)->delete(route('questions.destroy', $question));
+
+        $this->assertDatabaseMissing('questions', $question->toArray());
+    }
 }

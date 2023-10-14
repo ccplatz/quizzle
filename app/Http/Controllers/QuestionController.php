@@ -81,6 +81,12 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        if (request()->user()->cannot('delete', $question)) {
+            abort(403);
+        }
+
+        $question->delete();
+
+        return redirect()->route('questions.index');
     }
 }

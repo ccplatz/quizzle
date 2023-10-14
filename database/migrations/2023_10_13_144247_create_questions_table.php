@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->text('text');
             $table->foreignIdFor(User::class)->constrained();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

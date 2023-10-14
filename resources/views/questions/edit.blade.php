@@ -16,7 +16,17 @@
                                 <textarea class="form-control" name="text" id="text" rows="5">{{ $old->text ?? $question->text }}</textarea>
                             </div>
                             <a href="{{ route('questions.index') }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
+                            <a href="{{ route('questions.destroy', $question) }}" class="btn btn-danger"
+                                onclick="event.preventDefault();
+                                document.getElementById('delete-form').submit();">
+                                {{ __('Delete') }}
+                            </a>
                             <input type="submit" value="{{ __('Save') }}" class="btn btn-primary float-end">
+                        </form>
+                        <form id="delete-form" action="{{ route('questions.destroy', $question) }}" method="POST"
+                            style="display: none;">
+                            @csrf
+                            @method('DELETE')
                         </form>
                     </div>
                 </div>

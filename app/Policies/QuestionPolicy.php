@@ -45,7 +45,7 @@ class QuestionPolicy
      */
     public function delete(User $user, Question $question): bool
     {
-        //
+        return $user->id === $question->user_id;
     }
 
     /**
