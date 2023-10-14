@@ -13,9 +13,10 @@ class QuestionController extends Controller
      */
     public function index()
     {
+        $questions = Question::where('user_id', auth()->user()->id)->paginate(10);
         return view('questions.index')->with(
             [
-                'questions' => auth()->user()->questions
+                'questions' => $questions
             ]
         );
     }
@@ -25,7 +26,7 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        //
+        return view('questions.create');
     }
 
     /**
@@ -33,7 +34,11 @@ class QuestionController extends Controller
      */
     public function store(StoreQuestionRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $validated['user_id'] = auth()->user()->id;
+        Question::create($validated);
+
+        return redirect()->route('questions.index');
     }
 
     /**
@@ -49,7 +54,15 @@ class QuestionController extends Controller
      */
     public function edit(Question $question)
     {
-        //
+        if (request()->user()->cannot('view', $question)) {
+            abort(403);
+        }
+
+        return view('questions.edit')->with(
+            [
+                'question' => $question
+            ]
+        );
     }
 
     /**
@@ -57,7 +70,10 @@ class QuestionController extends Controller
      */
     public function update(UpdateQuestionRequest $request, Question $question)
     {
-        //
+        $validated = $request->validated();
+        $question->update($validated);
+
+        return redirect()->route('questions.index');
     }
 
     /**

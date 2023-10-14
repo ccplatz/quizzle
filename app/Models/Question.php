@@ -10,6 +10,11 @@ class Question extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'text',
+        'user_id'
+    ];
+
     /**
      * Get the user that owns the question.
      */

@@ -11,17 +11,18 @@
                         @if (count($questions) < 1)
                             {{ __("You don't have any questions yet!") }} <i class="bi bi-emoji-frown"></i>
                         @else
-                            <div class="list-group">
+                            <div class="list-group mb-2">
                                 @foreach ($questions as $question)
-                                    <a href="{{ route('questions.show', $question) }}"
+                                    <a href="{{ route('questions.edit', $question) }}"
                                         class="list-group-item list-group-item-action">
                                         <div>
-                                            {{ __('Question') }} #{{ $loop->index + 1 }}
+                                            {{ __('Question') }} #{{ $loop->index + $questions->firstItem() }}
                                         </div>
                                         <div>{{ Str::limit($question->text, 50) }}</div>
                                     </a>
                                 @endforeach
                             </div>
+                            {{ $questions->links() }}
                         @endif
                     </div>
                 </div>

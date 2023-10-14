@@ -35,7 +35,22 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('questions.index') }}">{{ __('Your Questions') }}</a>
+                            <a class="nav-link @if (Route::is('home')) active @endif"
+                                href="{{ route('home') }}">
+                                {{ __('Home') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @if (Route::is('questions.index') || Route::is('questions.edit')) active @endif"
+                                href="{{ route('questions.index') }}">
+                                {{ __('Your Questions') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @if (Route::is('questions.create')) active @endif"
+                                href="{{ route('questions.create') }}">
+                                {{ __('Create question') }}
+                            </a>
                         </li>
                     </ul>
 
@@ -78,6 +93,8 @@
                 </div>
             </div>
         </nav>
+
+        @include('partials.messages')
 
         <main class="py-4">
             @yield('content')

@@ -21,7 +21,7 @@ class QuestionPolicy
      */
     public function view(User $user, Question $question): bool
     {
-        //
+        return $user->id === $question->user_id;
     }
 
     /**
@@ -37,7 +37,7 @@ class QuestionPolicy
      */
     public function update(User $user, Question $question): bool
     {
-        //
+        return $user->id === $question->user_id;
     }
 
     /**

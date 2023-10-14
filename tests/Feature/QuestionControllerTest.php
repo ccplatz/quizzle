@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Question;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -24,11 +25,60 @@ class QuestionControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testThatUserCanSeeHisQuizzes(): void
+    public function testThatUserCanSeeHisQuestions(): void
     {
         $this->seed();
         $user = User::first();
         $response = $this->actingAs($user)->get('/questions');
+
         $response->assertSee('Question #1');
+    }
+
+    public function testThatUserCanReachEditQuestion(): void
+    {
+        $this->seed();
+        $user = User::first();
+        $question = $user->questions->first();
+        $response = $this->actingAs($user)->get(route('questions.edit', $question));
+
+        $response->assertSee('Edit question');
+    }
+
+    public function testThatUserCanEditHisQuestion(): void
+    {
+        $this->seed();
+        $user = User::first();
+        $question = $user->questions->first();
+        $newQuestion = Question::factory()->make();
+
+        $response = $this->actingAs($user)->patch(route('questions.update', $question), $newQuestion->toArray());
+
+        $this->assertDatabaseMissing('questions', $question->toArray());
+        $this->assertDatabaseHas('questions', $newQuestion->toArray());
+    }
+
+    public function testThatUserCannotEditAnotherUsersQuestion(): void
+    {
+        $this->seed();
+        $user1 = User::first();
+        $user2 = User::all()->last();
+        $question = $user1->questions->first();
+        $newQuestion = Question::factory()->make();
+
+        $response = $this->actingAs($user2)->patch(route('questions.update', $question), $newQuestion->toArray());
+
+        $response->assertForbidden();
+    }
+
+    public function testThatUserCannotViewAnotherUsersQuestion(): void
+    {
+        $this->seed();
+        $user1 = User::first();
+        $user2 = User::all()->last();
+        $question = $user1->questions->first();
+
+        $response = $this->actingAs($user2)->get(route('questions.edit', $question));
+
+        $response->assertForbidden();
     }
 }
