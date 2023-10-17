@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Quiz;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -26,7 +27,7 @@ class HomeControllerTest extends TestCase
 
     public function testThatUserCanSeeHisQuizzes(): void
     {
-        $this->seed();
+        User::factory(2)->has(Quiz::factory(1))->create();
         $user = User::first();
         $response = $this->actingAs($user)->get('/');
         $response->assertSee('#1');
