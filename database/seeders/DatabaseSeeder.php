@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Answer;
+use App\Models\Question;
+use App\Models\Quiz;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -15,17 +18,19 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory()
-            ->count(5)
-            ->hasQuizzes(3)
-            ->hasQuestions(10)
+            ->count(1)
+            ->has(Quiz::factory(2))
+            ->has(Question::factory(3)
+                ->has(Answer::factory(3)))
             ->create();
 
         User::factory()
-            ->hasQuizzes(3)
-            ->hasQuestions(10)
+            ->has(Quiz::factory(2))
+            ->has(Question::factory(11)
+                ->has(Answer::factory(4)))
             ->create([
-                'name' => '***REMOVED***',
-                'email' => '***REMOVED***',
+                'name' => 'testuser',
+                'email' => 'test@test.de',
             ]);
     }
 }

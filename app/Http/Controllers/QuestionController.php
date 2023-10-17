@@ -4,10 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Requests\UpdateQuestionRequest;
+use App\Models\Answer;
 use App\Models\Question;
+use App\Services\CreateAnswersService;
+use App\Services\UpdateAnswersService;
 
 class QuestionController extends Controller
 {
+    /**
+     * @var CreateAnswersService $createAnswersService
+     */
+    private CreateAnswersService $createAnswerService;
+
+    /**
+     * @var UpdateAnswersService $updateAnswersService
+     */
+    private UpdateAnswersService $updateAnswersService;
+
+    public function __construct(CreateAnswersService $createAnswersService, UpdateAnswersService $updateAnswersService)
+    {
+        $this->createAnswerService = $createAnswersService;
+        $this->updateAnswersService = $updateAnswersService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -26,7 +45,12 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        return view('questions.create');
+        return view('questions.create')->with(
+            [
+                'firstAnswerIdentifier' => Question::FIRST_ANSWER,
+                'lastAnswerIdentifier' => Question::LAST_ANSWER
+            ]
+        );
     }
 
     /**
@@ -34,9 +58,12 @@ class QuestionController extends Controller
      */
     public function store(StoreQuestionRequest $request)
     {
-        $validated = $request->validated();
-        $validated['user_id'] = auth()->user()->id;
-        Question::create($validated);
+        $validatedQuestionData = $request->safe()->only(['text']);
+        $validatedQuestionData['user_id'] = auth()->user()->id;
+        $question = Question::create($validatedQuestionData);
+
+        $validatedAnswersData = $request->safe()->except(['text']);
+        $this->createAnswerService->createAnswersFromRequestInput($validatedAnswersData, $question);
 
         return redirect()->route('questions.index');
     }
@@ -60,7 +87,9 @@ class QuestionController extends Controller
 
         return view('questions.edit')->with(
             [
-                'question' => $question
+                'question' => $question,
+                'firstAnswerIdentifier' => Question::FIRST_ANSWER,
+                'lastAnswerIdentifier' => Question::LAST_ANSWER
             ]
         );
     }
@@ -70,8 +99,11 @@ class QuestionController extends Controller
      */
     public function update(UpdateQuestionRequest $request, Question $question)
     {
-        $validated = $request->validated();
-        $question->update($validated);
+        $validatedQuestionData = $request->safe()->only(['text']);
+        $question->update($validatedQuestionData);
+
+        $validatedAnswersData = $request->safe()->except(['text']);
+        $this->updateAnswersService->updateAnswersFromRequestInput($validatedAnswersData, $question);
 
         return redirect()->route('questions.index');
     }
