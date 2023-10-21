@@ -16,9 +16,9 @@
                                 <textarea class="form-control" name="text" id="text" rows="5">{{ old('text') ?? $question->text }}</textarea>
                             </div>
                             @foreach (range($firstAnswerIdentifier, $lastAnswerIdentifier) as $char)
+                                <input type="hidden" name="answers[{{ $char }}][id]"
+                                    value="@if ($question->answers->get($loop->index)) {{ $question->answers->get($loop->index)->id }} @endif">
                                 <div class="input-group mb-3">
-                                    <input type="hidden" name="answers[{{ $char }}][id]"
-                                        value="@if ($question->answers->get($loop->index)) {{ $question->answers->get($loop->index)->id }} @endif">
                                     <span class="input-group-text">{{ $char }}</span>
                                     <input type="text" class="form-control" name="answers[{{ $char }}][text]"
                                         value="@if (old('answers.' . $char . '.text')) {{ old('answers.' . $char . '.text') }} 
