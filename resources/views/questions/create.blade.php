@@ -16,6 +16,8 @@
                                     placeholder="{{ __('Type your question here and your answers below. Set correct answers with checkboxes. Empty answers will be ignored.') }}">{{ old('text') }}</textarea>
                             </div>
                             @foreach (range($firstAnswerIdentifier, $lastAnswerIdentifier) as $char)
+                                <input type="hidden" name="answers[{{ $char }}][identifier]"
+                                    value="{{ $char }}">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">{{ $char }}</span>
                                     <input type="text" class="form-control" name="answers[{{ $char }}][text]"

@@ -18,7 +18,8 @@ class AnswerFactory extends Factory
     {
         return [
             'text' => $this->faker->sentence,
-            'correct' => $this->faker->boolean
+            'correct' => $this->faker->boolean,
+            'identifier' => $this->faker->randomElement(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']),
         ];
     }
 

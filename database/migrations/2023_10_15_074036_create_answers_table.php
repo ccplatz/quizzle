@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('text');
             $table->foreignIdFor(Question::class)->constrained();
             $table->boolean('correct');
+            $table->char('identifier');
             $table->timestamps();
         });
     }

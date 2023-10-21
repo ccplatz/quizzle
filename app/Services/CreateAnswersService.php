@@ -39,6 +39,7 @@ class CreateAnswersService
         $answer->text = $answerRawData['text'];
         $answer->question_id = $question->id;
         $answer->correct = Arr::has($answerRawData, 'correct') && $answerRawData['correct'] === 'on';
+        $answer->identifier = $answerRawData['identifier'];
         $answer->save();
     }
 }
