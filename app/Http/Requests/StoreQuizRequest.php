@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreQuizRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StoreQuizRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,7 @@ class StoreQuizRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "number_of_questions" => ["required", 'numeric', Rule::in([10, 20, 30])],
         ];
     }
 }

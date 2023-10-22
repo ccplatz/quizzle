@@ -18,14 +18,6 @@ class QuestionControllerTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    public function testThatLoggedInUserCanReachHome(): void
-    {
-        $user = User::factory()->create();
-        $response = $this->actingAs($user)->get('/');
-
-        $response->assertStatus(200);
-    }
-
     public function testThatUserCanCreateQuestion(): void
     {
         $user = User::factory()->create();

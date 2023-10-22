@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\QuizController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +22,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::resource('/questions', QuestionController::class)->except(['show']);
+
+    Route::post('quizzes/store', [QuizController::class, 'store'])->name('quizzes.store');
 });

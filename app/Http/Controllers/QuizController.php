@@ -29,7 +29,11 @@ class QuizController extends Controller
      */
     public function store(StoreQuizRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $validated['user_id'] = auth()->id();
+        $quiz = Quiz::create($validated);
+
+        return redirect()->route('home')->with("success", "");
     }
 
     /**

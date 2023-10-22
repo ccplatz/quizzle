@@ -18,7 +18,7 @@ class QuizFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'number_of_questions' => $this->faker->randomElement([10, 20, 30]),
         ];
     }
 }

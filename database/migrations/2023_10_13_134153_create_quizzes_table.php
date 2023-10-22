@@ -14,6 +14,7 @@ return new class extends Migration {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
+            $table->integer('number_of_questions')->unsigned()->default(10);
             $table->timestamps();
         });
     }

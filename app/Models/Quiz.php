@@ -11,6 +11,14 @@ class Quiz extends Model
     use HasFactory;
 
     /**
+     * @var array The fields that are fillable
+     */
+    protected $fillable = [
+        'number_of_questions',
+        'user_id'
+    ];
+
+    /**
      * Get the user that owns the quiz.
      */
     public function user(): BelongsTo
