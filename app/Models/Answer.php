@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Answer extends Model
 {
@@ -37,5 +38,13 @@ class Answer extends Model
     public function question(): BelongsTo
     {
         return $this->belongsTo(Question::class);
+    }
+
+    /**
+     * The quiz positions that belong to the answer.
+     */
+    public function quizPositions(): BelongsToMany
+    {
+        return $this->belongsToMany(QuizPosition::class)->using(Choice::class);
     }
 }

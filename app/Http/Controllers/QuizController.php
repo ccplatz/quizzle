@@ -3,25 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuizRequest;
-use App\Http\Requests\UpdateQuizRequest;
 use App\Models\Quiz;
+use App\Services\QuizService;
 
 class QuizController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @var QuizService $quizService
      */
-    public function index()
-    {
-        //
-    }
+    protected QuizService $quizService;
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function __construct(QuizService $quizService)
     {
-        //
+        $this->quizService = $quizService;
     }
 
     /**
@@ -33,38 +27,13 @@ class QuizController extends Controller
         $validated['user_id'] = auth()->id();
         $quiz = Quiz::create($validated);
 
-        return redirect()->route('home')->with("success", "");
+        return redirect()->route('quizzes.next', $quiz);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Quiz $quiz)
+    public function nextQuestion(Quiz $quiz)
     {
-        //
-    }
+        $question = $this->quizService->getNextQuestion($quiz);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Quiz $quiz)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateQuizRequest $request, Quiz $quiz)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Quiz $quiz)
-    {
-        //
+        return view('quizzes.next')->with('question', $question);
     }
 }

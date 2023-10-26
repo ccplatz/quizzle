@@ -24,4 +24,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/questions', QuestionController::class)->except(['show']);
 
     Route::post('quizzes/store', [QuizController::class, 'store'])->name('quizzes.store');
+    Route::get('quizzes/{quiz}/next_question', [QuizController::class, 'nextQuestion'])->name('quizzes.next');
 });
