@@ -30,10 +30,39 @@ class QuizController extends Controller
         return redirect()->route('quizzes.next', $quiz);
     }
 
+    /**
+     * Show the next question to the user.
+     *
+     * @param  mixed $quiz
+     * @return void
+     */
     public function nextQuestion(Quiz $quiz)
     {
+        if ($quiz->questions->count() >= $quiz->number_of_questions) {
+            return redirect()->route('quizzes.result', $quiz);
+        }
         $question = $this->quizService->getNextQuestion($quiz);
 
-        return view('quizzes.next')->with('question', $question);
+        return view('quizzes.next')->with(
+            [
+                'quiz' => $quiz->refresh(),
+                'question' => $question
+            ]
+        );
+    }
+
+    /**
+     * Show the result to the user.
+     *
+     * @param  mixed $quiz
+     * @return void
+     */
+    public function result(Quiz $quiz)
+    {
+        return view('quizzes.result')->with(
+            [
+                'quiz' => $quiz
+            ]
+        );
     }
 }

@@ -10,8 +10,8 @@ class QuizService
 
     public function getNextQuestion(Quiz $quiz): Question
     {
-        $questionsInCurrentQuiz = $quiz->questions;
-        $question = Question::whereNotIn('id', $questionsInCurrentQuiz)->get()->random();
+        $questionsIdsInCurrentQuiz = $quiz->questions->map->only(['id'])->flatten()->toArray();
+        $question = Question::whereNotIn('id', $questionsIdsInCurrentQuiz)->get()->random();
         $quiz->questions()->attach($question->id);
 
         return $question;

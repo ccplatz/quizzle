@@ -34,6 +34,7 @@ class Quiz extends Model
     {
         return $this->belongsToMany(Question::class, 'quiz_position')
             ->using(QuizPosition::class)
+            ->as('quizPosition')
             ->withTimestamps();
     }
 }
