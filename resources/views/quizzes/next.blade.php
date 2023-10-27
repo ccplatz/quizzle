@@ -5,8 +5,8 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Question #') }} {{ $quiz->questions->count() }} of
-                        {{ $quiz->number_of_questions }}
+                    <div class="card-header">
+                        {{ __('Question') }} {{ $quiz->questions->count() }} of {{ $quiz->number_of_questions }}
                     </div>
 
                     <div class="card-body">

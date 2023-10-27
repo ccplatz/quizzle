@@ -37,4 +37,14 @@ class Quiz extends Model
             ->as('quizPosition')
             ->withTimestamps();
     }
+
+    /**
+     * Returns true if the quiz is finished.
+     *
+     * @return bool
+     */
+    public function isFinished(): bool
+    {
+        return $this->questions->count() >= $this->number_of_questions;
+    }
 }
