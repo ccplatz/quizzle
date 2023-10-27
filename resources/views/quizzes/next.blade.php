@@ -4,29 +4,36 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        {{ __('Question') }} {{ $quiz->questions->count() }} of {{ $quiz->number_of_questions }}
-                    </div>
+                <form action="{{ route('quizzes.next', $quiz) }}" method="POST">
+                    <div class="card">
+                        <div class="card-header">
+                            {{ __('Question') }} {{ $quiz->questions->count() }} of {{ $quiz->number_of_questions }}
+                        </div>
 
-                    <div class="card-body">
-                        <p>{{ $question->text }}</p>
-                        <form action="{{ route('quizzes.next', $quiz) }}" method="POST">
+                        <div class="card-body">
+                            <p>{{ $question->text }}</p>
                             @csrf
                             @foreach ($question->answers as $answer)
-                                <div class="row border rounded my-2 py-1">
-                                    <div class="col-1">{{ $answer->identifier }}</div>
+                                <div class="answer row border rounded my-2 py-1 pointer">
+                                    <div class="col-1 d-flex justify-content-center align-items-center">
+                                        {{ $answer->identifier }}</div>
                                     <div class="col-10">{{ $answer->text }}</div>
-                                    <div class="col-1">
-                                        <input class="form-check-input mt-0" name="answers[{{ $answer->id }}]"
-                                            type="checkbox" @checked(old('answers.' . $answer->id))>
+                                    <div class="col-1 d-flex justify-content-center align-items-center">
+                                        <input class="answer__check form-check-input mt-0"
+                                            name="answers[{{ $answer->id }}]" type="checkbox"
+                                            @checked(old('answers.' . $answer->id))>
                                     </div>
                                 </div>
                             @endforeach
-                        </form>
+                        </div>
                     </div>
-                </div>
+                    <input type="submit" value="{{ __('Save and next') }}" class="btn btn-primary float-end my-3">
+                </form>
             </div>
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    @vite(['resources/js/quizzes/next.js'])
+@endpush
