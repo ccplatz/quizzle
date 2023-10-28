@@ -45,6 +45,6 @@ class Answer extends Model
      */
     public function quizPositions(): BelongsToMany
     {
-        return $this->belongsToMany(QuizPosition::class)->using(Choice::class);
+        return $this->belongsToMany(QuizPosition::class, 'choice')->using(Choice::class);
     }
 }

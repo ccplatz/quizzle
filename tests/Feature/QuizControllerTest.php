@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Exceptions\NoQuestionAvailableException;
+use App\Models\Answer;
 use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\User;
@@ -72,13 +73,47 @@ class QuizControllerTest extends TestCase
     {
         $user = User::factory()
             ->has(Quiz::factory(1)->state(['number_of_questions' => 10]))
-            ->has(Question::factory(1))
+            ->has(Question::factory(1)->has(Answer::factory(1)))
             ->create();
         $quiz = $user->quizzes->first();
-        $quiz->questions()->attach($user->questions->first()->id);
+        $question = $user->questions->first();
+        $quiz->questions()->attach($question->id);
+        // Attach an answer to the quizPosition to make it complete
+        $quiz->questions->first()->quizPosition->answers()->attach(Answer::where('question_id', $question->id)->first());
 
         $response = $this->actingAs($user)->get(route('quizzes.next', $quiz));
         $response->assertRedirect(route('home'));
         $this->followRedirects($response)->assertSee('No further question found.');
+    }
+
+    public function testThatQuizShowsOpenQuestionIfOpenAvailable(): void
+    {
+        $user = User::factory()
+            ->has(Quiz::factory(1)->state(['number_of_questions' => 10]))
+            ->has(Question::factory(1))
+            ->create();
+        $quiz = $user->quizzes->first();
+        $question = $user->questions->first();
+        $quiz->questions()->attach($question->id);
+
+        $response = $this->actingAs($user)->get(route('quizzes.next', $quiz));
+        $response->assertSee('Question 1 of 10')->assertSee($question->text);
+
+        $response = $this->actingAs($user)->get(route('quizzes.next', $quiz));
+        $response->assertSee('Question 1 of 10')->assertSee($question->text);
+    }
+
+    public function testThatQuizGetsNoNewQuestionIfOpenAvailable(): void
+    {
+        $user = User::factory()
+            ->has(Quiz::factory(1)->state(['number_of_questions' => 10]))
+            ->has(Question::factory(2))
+            ->create();
+        $quiz = $user->quizzes->first();
+        $question = $user->questions->first();
+        $quiz->questions()->attach($question->id);
+
+        $response = $this->actingAs($user)->get(route('quizzes.next', $quiz));
+        $this->assertTrue($quiz->questions->count() === 1);
     }
 }

@@ -17,6 +17,10 @@ class QuizService
      */
     public function getNextQuestion(Quiz $quiz): Question
     {
+        if ($this->getOpenQuestion($quiz)) {
+            return $this->getOpenQuestion($quiz);
+        }
+
         $questions = $this->getAvailableQuestions($quiz);
         $question = $questions->random();
 
@@ -36,5 +40,34 @@ class QuizService
         throw_if($questions->count() < 1, NoQuestionAvailableException::class, 'No further question found.');
 
         return $questions;
+    }
+
+    /**
+     * Get an open question from the quiz.
+     *
+     * @param  mixed $quiz
+     * @return Question
+     */
+    private function getOpenQuestion(Quiz $quiz): ?Question
+    {
+        return $quiz->questions->filter(function ($question) {
+            return $question->quizPosition->answers->count() < 1;
+        })->first();
+    }
+
+    /**
+     * Add question to quiz if it is not already attached to it.
+     *
+     * @param  mixed $quiz
+     * @param  mixed $question
+     * @return void
+     */
+    public function addNewQuestion(Quiz $quiz, Question $question): void
+    {
+        if (!$quiz->questions->contains($question)) {
+            $quiz->questions()->attach($question);
+        }
+
+        return;
     }
 }

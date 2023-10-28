@@ -58,6 +58,7 @@ class Question extends Model
         return $this->belongsToMany(Quiz::class, 'quiz_position')
             ->using(QuizPosition::class)
             ->as('quizPosition')
+            ->withPivot('id')
             ->withTimestamps();
     }
 }

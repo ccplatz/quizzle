@@ -34,6 +34,6 @@ class QuizPosition extends Pivot
      */
     public function answers(): BelongsToMany
     {
-        return $this->belongsToMany(Answer::class)->using(Choice::class);
+        return $this->belongsToMany(Answer::class, 'choice', 'quiz_position_id')->using(Choice::class);
     }
 }

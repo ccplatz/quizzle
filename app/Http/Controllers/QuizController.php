@@ -53,7 +53,7 @@ class QuizController extends Controller
             Log::error($e->getMessage());
             return redirect()->route('home')->withErrors($e->getMessage());
         }
-        $quiz->questions()->attach($question->id);
+        $this->quizService->addNewQuestion($quiz, $question);
         $quiz->refresh();
 
         return view('quizzes.next')->with(
