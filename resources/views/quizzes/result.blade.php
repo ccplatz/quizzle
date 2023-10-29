@@ -17,30 +17,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="table-success">
-                                    <th scope="row">#1</th>
-                                    <td>A B C</td>
-                                    <td>B <span class="text-success">B</span> <span class="text-danger">B</span></td>
-                                </tr>
-                                <tr class="table-danger">
-                                    <th scope="row">#1</th>
-                                    <td>A <span class="text-danger">B</span> <span class="text-success">C</span></td>
-                                    <td>B C D</td>
-                                </tr>
+                                @foreach ($result as $key => $item)
+                                    <tr
+                                        class="table-{{ $item['question']->quizPosition->isCorrect() ? 'success' : 'danger' }}">
+                                        <th scope="row">#{{ $key }}</th>
+                                        <td>
+                                            @foreach ($item['correctAnswers'] as $answer)
+                                                <span
+                                                    class="text-{{ $item['choices']->where('identifier', $answer->identifier)->count() > 0 ? 'success' : 'danger' }}">
+                                                    {{ $answer->identifier }}&nbsp;</span>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @foreach ($item['choices'] as $answer)
+                                                <span class="text-{{ $answer->correct ? 'success' : 'danger' }}">
+                                                    {{ $answer->identifier }}&nbsp;</span>
+                                            @endforeach
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
-                        @foreach ($questions as $question)
-                            Question #{{ $loop->index + 1 }} <br>
-                            id: {{ $question->id }} <br>
-                            {{ $question->text }} <br>
-                            {{ $question->quizPosition->isCorrect() ? 'richtig' : 'falsch' }} <br>
-                            choices:
-                            @foreach ($question->quizPosition->answers as $choice)
-                                id:{{ $choice->id }} <br>
-                                correct: {{ $choice->correct }} <br>
-                            @endforeach
-                            <br>
-                        @endforeach
                     </div>
                 </div>
             </div>

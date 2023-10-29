@@ -70,4 +70,17 @@ class QuizService
 
         return;
     }
+
+    public function getResult(Quiz $quiz): Collection
+    {
+        $result = [];
+        $questions = $quiz->questions;
+        foreach ($questions as $key => $question) {
+            $result[$key + 1]['question'] = $question;
+            $result[$key + 1]['correctAnswers'] = $question->answers->where('correct', true)->sortBy('identifier');
+            $result[$key + 1]['choices'] = $question->quizPosition->answers->sortBy('identifier');
+        }
+
+        return collect($result);
+    }
 }

@@ -76,10 +76,13 @@ class QuizController extends Controller
      */
     public function result(Quiz $quiz)
     {
+        $result = $this->quizService->getResult($quiz);
+
         return view('quizzes.result')->with(
             [
                 'quiz' => $quiz,
                 'questions' => $quiz->questions,
+                'result' => $result
             ]
         );
     }
