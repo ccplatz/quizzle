@@ -26,4 +26,5 @@ Route::middleware(['auth'])->group(function () {
     Route::post('quizzes/store', [QuizController::class, 'store'])->name('quizzes.store');
     Route::get('quizzes/{quiz}/next_question', [QuizController::class, 'nextQuestion'])->name('quizzes.next');
     Route::get('quizzes/{quiz}/result', [QuizController::class, 'result'])->name('quizzes.result');
+    Route::post('quizzes/{quiz}/store_choices', [QuizController::class, 'storeChoices'])->name('quizzes.store-choices');
 });

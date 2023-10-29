@@ -6,6 +6,7 @@
             <div class="col-md-8">
                 <form action="{{ route('quizzes.store-choices', $quiz) }}" method="POST">
                     @csrf
+                    <input type="hidden" name="quizPosition" value="{{ $quizPosition->id }}">
                     <div class="card">
                         <div class="card-header">
                             {{ __('Question') }} {{ $quiz->questions->count() }} of {{ $quiz->number_of_questions }}
@@ -21,9 +22,8 @@
                                         <div class="col-10">{{ $answer->text }}</div>
                                         <div class="col-1 d-flex justify-content-center align-items-center">
                                             <input id="answerCheck-{{ $answer->id }}"
-                                                class="answer__check form-check-input mt-0"
-                                                name="choices[{{ $answer->id }}]" type="checkbox"
-                                                @checked(old('choices.' . $answer->id))>
+                                                class="answer__check form-check-input mt-0" name="choices[]"
+                                                value="{{ $answer->id }}" type="checkbox">
                                         </div>
                                     </div>
                                 </label>

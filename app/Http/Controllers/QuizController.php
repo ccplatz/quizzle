@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\NoQuestionAvailableException;
+use App\Http\Requests\StoreChoiceRequest;
 use App\Http\Requests\StoreQuizRequest;
 use App\Models\Quiz;
+use App\Models\QuizPosition;
 use App\Services\QuizService;
 use Illuminate\Support\Facades\Log;
 
@@ -55,11 +57,13 @@ class QuizController extends Controller
         }
         $this->quizService->addNewQuestion($quiz, $question);
         $quiz->refresh();
+        $quizPosition = $quiz->questions->where('id', $question->id)->first()->quizPosition;
 
         return view('quizzes.next')->with(
             [
                 'quiz' => $quiz,
-                'question' => $question
+                'question' => $question,
+                'quizPosition' => $quizPosition,
             ]
         );
     }
@@ -74,8 +78,28 @@ class QuizController extends Controller
     {
         return view('quizzes.result')->with(
             [
-                'quiz' => $quiz
+                'quiz' => $quiz,
+                'questions' => $quiz->questions,
             ]
         );
+    }
+
+    /**
+     * Store the choices for the last question.
+     *
+     * @param  mixed $request
+     * @param  mixed $quiz
+     * @return void
+     */
+    public function storeChoices(StoreChoiceRequest $request, Quiz $quiz)
+    {
+        $validated = $request->validated();
+        $quizPosition = QuizPosition::findOrfail($validated['quizPosition']);
+
+        foreach ($validated['choices'] as $choice) {
+            $quizPosition->answers()->attach($choice);
+        }
+
+        return redirect()->route('quizzes.next', $quiz);
     }
 }
