@@ -48,4 +48,14 @@ class Quiz extends Model
     {
         return $this->questions->count() >= $this->number_of_questions;
     }
+
+    /**
+     * Returns true if the quiz is finished.
+     *
+     * @return bool
+     */
+    public function getCountOfOpenQuizPositions(): int
+    {
+        return $this->number_of_questions - $this->questions->count() + 1;
+    }
 }

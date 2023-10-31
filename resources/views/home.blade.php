@@ -14,19 +14,37 @@
                             <form action="{{ route('quizzes.store') }}" method="post" class="d-flex pb-3">
                                 @csrf
                                 <input type="submit" class="btn btn-primary" value="{{ __('Start new Quiz with') }}">
-                                <select class="form-select ms-3" name="number_of_questions" id="questions-select">
+                                <select class="form-select ms-2" name="number_of_questions" id="questions-select">
                                     <option value="10">10 questions</option>
                                     <option value="20">20 questions</option>
                                     <option value="30">30 questions</option>
                                 </select>
                             </form>
-                            <ul class="list-group">
+                            <div class="list-group">
                                 @foreach ($quizzes as $quiz)
-                                    <li class="list-group-item"><span class="me-3">#{{ $loop->index + 1 }}</span>
-                                        {{ $quiz->number_of_questions }}
-                                        questions - started on {{ $quiz->created_at->format('d.m.Y') }}</li>
+                                    <a class="list-group-item list-group-item-action"
+                                        href="{{ route('quizzes.next', $quiz) }}">
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <span class="me-2">#{{ $loop->index + 1 }}</span>
+                                            </div>
+                                            <div class="col-8">
+                                                {{ $quiz->number_of_questions }}
+                                                questions - {{ $quiz->created_at->format('d.m.Y') }}
+                                            </div>
+                                            <div class="col-2 d-flex justify-content-center align-items-center">
+                                                @if ($quiz->isFinished())
+                                                    <span class="text-success float-end"><i class="bi bi-check"></i></span>
+                                                @else
+                                                    <span class="badge bg-primary rounded-pill float-end">
+                                                        {{ $quiz->getCountOfOpenQuizPositions() }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </a>
                                 @endforeach
-                            </ul>
+                            </div>
                         @endif
                     </div>
                 </div>
