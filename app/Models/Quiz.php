@@ -20,6 +20,13 @@ class Quiz extends Model
     ];
 
     /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['questions.answers'];
+
+    /**
      * Get the user that owns the quiz.
      */
     public function user(): BelongsTo

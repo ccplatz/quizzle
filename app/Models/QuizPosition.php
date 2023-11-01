@@ -31,6 +31,13 @@ class QuizPosition extends Pivot
     ];
 
     /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['answers'];
+
+    /**
      * The answers that belong to the quiz position.
      */
     public function answers(): BelongsToMany
