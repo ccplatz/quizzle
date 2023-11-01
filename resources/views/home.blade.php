@@ -29,8 +29,14 @@
                                                 <span class="me-2">#{{ $loop->index + 1 }}</span>
                                             </div>
                                             <div class="col-8">
-                                                {{ $quiz->number_of_questions }}
-                                                questions - {{ $quiz->created_at->format('d.m.Y') }}
+                                                @if ($quiz->isFinished())
+                                                    {{ $quiz->getCountOfCorrectQuizPositions() }}/{{ $quiz->number_of_questions }}
+                                                    correct
+                                                @else
+                                                    {{ $quiz->number_of_questions }}
+                                                    questions
+                                                @endif
+                                                - {{ $quiz->created_at->format('d.m.Y') }}
                                             </div>
                                             <div class="col-2 d-flex justify-content-center align-items-center">
                                                 @if ($quiz->isFinished())

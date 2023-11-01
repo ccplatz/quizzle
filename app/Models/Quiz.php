@@ -58,4 +58,16 @@ class Quiz extends Model
     {
         return $this->number_of_questions - $this->questions->count() + 1;
     }
+
+    public function getCountOfCorrectQuizPositions(): int
+    {
+        $counter = 0;
+        foreach ($this->questions as $question) {
+            if ($question->quizPosition->isCorrect()) {
+                $counter++;
+            }
+        }
+
+        return $counter;
+    }
 }
