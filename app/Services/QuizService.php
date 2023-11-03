@@ -17,8 +17,9 @@ class QuizService
      */
     public function getNextQuestion(Quiz $quiz): Question
     {
-        if ($this->getOpenQuestion($quiz)) {
-            return $this->getOpenQuestion($quiz);
+        $openQuestion = $this->getOpenQuestion($quiz);
+        if ($openQuestion) {
+            return $openQuestion;
         }
 
         $questions = $this->getAvailableQuestions($quiz);

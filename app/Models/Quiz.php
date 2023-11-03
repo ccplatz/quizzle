@@ -53,7 +53,18 @@ class Quiz extends Model
      */
     public function isFinished(): bool
     {
-        return $this->questions->count() >= $this->number_of_questions;
+        if ($this->questions->count() < $this->number_of_questions) {
+            return false;
+        }
+
+        foreach ($this->questions as $question) {
+            $quizPositionHasAtLeastOneAnswer = $question->quizPosition->answers->count() > 0;
+            if (!$quizPositionHasAtLeastOneAnswer) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
