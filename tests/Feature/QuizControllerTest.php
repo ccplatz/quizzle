@@ -145,4 +145,17 @@ class QuizControllerTest extends TestCase
             ]
         );
     }
+
+    public function testThatUserCannotViewAnotherUsersQuizzes(): void
+    {
+        User::factory(2)
+            ->has(Quiz::factory(1)->state(['number_of_questions' => 10]))
+            ->has(Question::factory(1)->has(Answer::factory(2)))
+            ->create();
+
+        $user1 = User::first();
+        $user2 = User::all()->last();
+        $response = $this->actingAs($user1)->get(route('quizzes.next', $user2->quizzes->first()));
+        $response->assertStatus(403);
+    }
 }

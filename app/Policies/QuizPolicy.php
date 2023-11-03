@@ -21,7 +21,7 @@ class QuizPolicy
      */
     public function view(User $user, Quiz $quiz): bool
     {
-        //
+        return $user->id === $quiz->user_id;
     }
 
     /**
