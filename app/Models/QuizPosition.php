@@ -89,7 +89,7 @@ class QuizPosition extends Pivot
      */
     private function questionHasAtLeastOneMoreCorrectAnswerThatIsNoChoise(): bool
     {
-        $question = Question::where('id', $this->question_id)->first();
+        $question = Question::withTrashed()->where('id', $this->question_id)->first();
         $correctAnswers = $question->answers->where('correct', true);
         $diff = $correctAnswers->diff($this->answers);
         if ($diff->count() > 0) {

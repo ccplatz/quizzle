@@ -43,7 +43,8 @@ class Quiz extends Model
             ->using(QuizPosition::class)
             ->as('quizPosition')
             ->withPivot('id')
-            ->withTimestamps();
+            ->withTimestamps()
+            ->withTrashed();
     }
 
     /**
@@ -53,11 +54,15 @@ class Quiz extends Model
      */
     public function isFinished(): bool
     {
-        if ($this->questions->count() < $this->number_of_questions) {
+        $quizCanTakeMoreQuestions = $this->questions->count() < $this->number_of_questions;
+        if ($quizCanTakeMoreQuestions) {
             return false;
         }
 
         foreach ($this->questions as $question) {
+            if ($question->trashed()) {
+                continue;
+            }
             $quizPositionHasAtLeastOneAnswer = $question->quizPosition->answers->count() > 0;
             if (!$quizPositionHasAtLeastOneAnswer) {
                 return false;
