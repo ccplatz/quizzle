@@ -12,7 +12,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('choice', function (Blueprint $table) {
+        Schema::create('choices', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('quiz_position_id');
             $table->foreignIdFor(Answer::class)->constrained();
@@ -27,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('choice');
+        Schema::dropIfExists('choices');
     }
 };

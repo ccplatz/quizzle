@@ -42,7 +42,7 @@ class QuizPosition extends Pivot
      */
     public function answers(): BelongsToMany
     {
-        return $this->belongsToMany(Answer::class, 'choice', 'quiz_position_id')
+        return $this->belongsToMany(Answer::class, 'choices', 'quiz_position_id')
             ->using(Choice::class)
             ->withTimestamps();
     }

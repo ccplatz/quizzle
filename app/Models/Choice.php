@@ -11,7 +11,7 @@ class Choice extends Pivot
      *
      * @var string
      */
-    protected $table = 'choice';
+    protected $table = 'choices';
 
     /**
      * Indicates if the IDs are auto-incrementing.

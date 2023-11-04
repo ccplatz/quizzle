@@ -45,7 +45,7 @@ class Answer extends Model
      */
     public function quizPositions(): BelongsToMany
     {
-        return $this->belongsToMany(QuizPosition::class, 'choice')
+        return $this->belongsToMany(QuizPosition::class, 'choices')
             ->using(Choice::class)
             ->withTimestamps();
     }

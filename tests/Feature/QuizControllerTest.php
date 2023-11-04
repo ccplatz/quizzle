@@ -138,7 +138,7 @@ class QuizControllerTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('quizzes.store-choices', $quiz), $data);
         $this->assertDatabaseHas(
-            'choice',
+            'choices',
             [
                 'quiz_position_id' => $data['quizPosition'],
                 'answer_id' => $data['choices'][0]
