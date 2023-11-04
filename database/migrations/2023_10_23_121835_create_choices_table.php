@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->foreignIdFor(Answer::class)->constrained();
             $table->timestamps();
 
-            $table->foreign('quiz_position_id')->references('id')->on('quiz_position');
+            $table->foreign('quiz_position_id')->references('id')->on('quiz_positions');
         });
     }
 

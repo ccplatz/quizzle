@@ -39,7 +39,7 @@ class Quiz extends Model
      */
     public function questions(): BelongsToMany
     {
-        return $this->belongsToMany(Question::class, 'quiz_position')
+        return $this->belongsToMany(Question::class, 'quiz_positions')
             ->using(QuizPosition::class)
             ->as('quizPosition')
             ->withPivot('id')

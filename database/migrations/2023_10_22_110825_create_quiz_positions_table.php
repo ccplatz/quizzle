@@ -12,7 +12,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('quiz_position', function (Blueprint $table) {
+        Schema::create('quiz_positions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Question::class)->constrained();
             $table->foreignIdFor(Quiz::class)->constrained();
@@ -25,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('quiz_position');
+        Schema::dropIfExists('quiz_positions');
     }
 };

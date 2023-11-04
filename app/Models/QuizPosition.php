@@ -13,7 +13,7 @@ class QuizPosition extends Pivot
      *
      * @var string
      */
-    protected $table = 'quiz_position';
+    protected $table = 'quiz_positions';
 
     /**
      * Indicates if the IDs are auto-incrementing.
